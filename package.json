@@ -1,0 +1,57 @@
+{
+  "name": "node-close.io",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "lib"
+  ],
+  "directories": [
+    "lib",
+    "test"
+  ],
+  "scripts": {
+    "test": "lab -m 5000 -v -c test/",
+    "check-coverage": "lab -t 100 -r html -o coverage.html test.js",
+    "open-coverage": "open coverage.html",
+    "jshint": "jshint -c .jshintrc *.js",
+    "code-style": "jscs -p google *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaquimserafim/node-close.io.git"
+  },
+  "keywords": [
+    "close.io"
+  ],
+  "author": "@joaquimserafim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joaquimserafim/node-close.io/issues"
+  },
+  "homepage": "https://github.com/joaquimserafim/node-close.io",
+  "devDependencies": {
+    "code": "^1.4.0",
+    "jscs": "^1.13.1",
+    "jshint": "^2.8.0",
+    "lab": "^5.9.0",
+    "nock": "^2.4.0",
+    "pre-commit": "^1.0.7"
+  },
+  "pre-commit": [
+    "jshint",
+    "code-style",
+    "test",
+    "check-coverage"
+  ],
+  "dependencies": {
+    "debug": "^2.2.0",
+    "is-js-object": "^1.0.0",
+    "js-object-pick": "^1.0.2",
+    "omit.keys": "^1.0.1",
+    "request": "^2.57.0"
+  }
+}
