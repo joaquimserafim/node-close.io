@@ -5,5 +5,3 @@ node_modules
 .DS_Store
 coverage
 *.html
-versions/mongod
-vm_linux

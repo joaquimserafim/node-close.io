@@ -7,7 +7,6 @@ var lab = module.exports.lab = Lab.script()
 
 var describe  = lab.describe
 var it        = lab.it
-var before    = lab.before
 var expect    = Code.expect
 
 var helpers = require('./')
@@ -16,70 +15,102 @@ var closeio = helpers.closeio
 var uuid    = helpers.uuid
 
 describe('contact', function() {
+  var leadId
+  var contactId
+  var leadName = 'Hulk' + uuid()
+
+  it('create lead', function(done) {
+    closeio.lead
+      .create({name: leadName})
+      .done(function(err, body, info) {
+        expect(err).to.be.null()
+        expect(body.id).to.exist()
+        leadId = body.id
+        expect(info.statusCode).to.equal(200)
+        done()
+      })
+  })
 
   it('create contact', function(done) {
     closeio.contact
-      .create({name: leadName})
+      .create({
+        name: leadName,
+        lead_id: leadId,
+        phones: [{phone: '9045551234', type: 'mobile'}],
+        emails: [{email: 'john@example.com', type: 'office'}]
+      })
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
         expect(body.id).to.exist()
-        leadId = body.id
+        expect(body.phones[0].phone).to.equal('+19045551234')
+        expect(body.phones[0].type).to.equal('mobile')
+        expect(body.emails[0].email).to.equal('john@example.com')
+        expect(body.emails[0].type).to.equal('office')
+        contactId = body.id
         expect(info).to.be.an.object()
         expect(info.statusCode).to.equal(200)
         done()
       })
   })
 
-  it('search contact linit by 1', function(done) {
+  it('list contacts', function(done) {
     closeio.contact
-      .search({limit: 1})
+      .search()
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
-        expect(body.data.length).to.equal(1)
-        expect(info).to.be.an.object()
         expect(info.statusCode).to.equal(200)
         done()
       })
   })
 
-  it('get contact', function(done) {
+  it('fetch a single contact', function(done) {
     closeio.contact
-      .read(leadId)
+      .read(contactId)
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
-        expect(body.display_name).to.equal(leadName)
-        expect(body.id).to.equal(leadId)
-        expect(info).to.be.an.object()
         expect(info.statusCode).to.equal(200)
         done()
       })
   })
 
-  it('update contact', function(done) {
+  it('update an existing contact', function(done) {
     closeio.contact
-      .update(leadId, {description: 'Hello World'})
+      .update(contactId, {
+        emails: [{
+          email: 'john@beach.io',
+          type: 'beach'
+        }]
+      })
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
-        expect(body.display_name).to.equal(leadName)
-        expect(body.id).to.equal(leadId)
-        expect(body.description).to.equal('Hello World')
-        expect(info).to.be.an.object()
+        expect(info.statusCode).to.equal(200)
+        expect(body.emails[0].email).to.equal('john@beach.io')
+        expect(body.emails[0].type).to.equal('beach')
+        done()
+      })
+  })
+
+  it('delete an existing contact', function(done) {
+    closeio.contact
+      .delete(contactId)
+      .done(function(err, body, info) {
+        expect(err).to.be.null()
+        expect(body).to.be.an.object()
         expect(info.statusCode).to.equal(200)
         done()
       })
   })
 
-  it('delete contact', function(done) {
-    closeio.contact
-      .read(leadId)
+  it('delete lead', function(done) {
+    closeio.lead
+      .delete(leadId)
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
-        expect(body.id).to.equal(leadId)
         expect(info.statusCode).to.equal(200)
         done()
       })

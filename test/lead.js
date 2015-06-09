@@ -7,7 +7,6 @@ var lab = module.exports.lab = Lab.script()
 
 var describe  = lab.describe
 var it        = lab.it
-var before    = lab.before
 var expect    = Code.expect
 
 var helpers = require('./')
@@ -97,11 +96,10 @@ describe('lead', function() {
 
   it('delete lead', function(done) {
     closeio.lead
-      .read(leadId)
+      .delete(leadId)
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
-        expect(body.id).to.equal(leadId)
         expect(info.statusCode).to.equal(200)
         done()
       })
