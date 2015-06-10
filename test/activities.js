@@ -156,6 +156,47 @@ describe('activities', function() {
     })
   })
 
+  describe('call', function() {
+    var callId
+    it('log a call activity manually', function(done) {
+      closeio.activity.call
+        .create({
+          lead_id: leadId,
+          status: 'completed'
+        })
+        .done(function(err, body, info) {
+          expect(err).to.be.null()
+          expect(body).to.be.an.object()
+          callId = body.id
+          expect(info.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('list or filter all call activities', function(done) {
+      closeio.activity.call
+        .search({ lead_id: leadId})
+        .done(function(err, body, info) {
+          expect(err).to.be.null()
+          expect(body).to.be.an.object()
+          expect(body.data).to.be.an.array()
+          expect(info.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('delete a call activity', function(done) {
+      closeio.activity.call
+        .delete(callId)
+        .done(function(err, body, info) {
+          expect(err).to.be.null()
+          expect(body).to.be.an.object()
+          expect(info.statusCode).to.equal(200)
+          done()
+        })
+    })
+  })
+
   describe('lead', function() {
     it('delete lead', function(done) {
       closeio.lead

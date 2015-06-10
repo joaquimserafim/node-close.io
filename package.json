@@ -1,7 +1,7 @@
 {
   "name": "node-close.io",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "a simple module to use the Close.io REST API",
   "main": "index.js",
   "files": [
     "LICENSE",
@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "test": "lab -m 5000 -v -c test/",
-    "check-coverage": "lab -t 100 -r html -o coverage.html test.js",
+    "check-coverage": "lab -m 5000 -t 95 -r html -o coverage.html test/",
     "open-coverage": "open coverage.html",
     "jshint": "jshint -c .jshintrc *.js",
     "code-style": "jscs -p google *.js"
@@ -37,9 +37,9 @@
     "code": "^1.4.0",
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
-    "lab": "^5.9.0",
+    "lab": "^5.10.0",
     "nock": "^2.4.0",
-    "pre-commit": "^1.0.7"
+    "pre-commit": "^1.0.8"
   },
   "pre-commit": [
     "jshint",

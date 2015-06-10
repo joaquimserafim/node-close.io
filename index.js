@@ -4,7 +4,6 @@ var request   = require('request')
 var pick      = require('js-object-pick')
 var isObject  = require('is-js-object')
 var extend    = require('util')._extend
-var inherits  = require('util').inherits
 var debug     = require('debug')('node-close.io')
 
 var operations = require('./lib/operations')
@@ -26,7 +25,7 @@ function Closeio (apiKey) {
   Closeio.init.call(this, apiKey)
 }
 
-Closeio.init = function init (apiKey) {
+Closeio.init = function init () {
   var self = this
 
   self.lead = {
@@ -61,6 +60,7 @@ Closeio.init = function init (apiKey) {
       delete: operations.delete('activity/email', self)
     },
     call: {
+      create: operations.create('activity/call', self),
       search: operations.search('activity/call', self),
       delete: operations.delete('activity/call', self)
     }
@@ -137,12 +137,12 @@ Closeio.prototype.done = function done (cb) {
 //
 //
 
-function makeRequest(options, cb) {debugger
+function makeRequest(options, cb) {
   debug('request: %j', options);
 
   request(options, requestCb);
 
-  function requestCb(err, res, body) {debugger
+  function requestCb(err, res, body) {
     var respInfo = {};
 
     if (isObject(res)) {
