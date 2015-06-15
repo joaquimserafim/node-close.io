@@ -37,7 +37,6 @@ describe('opportunity', function() {
         note: 'i hope this deal closes...',
         confidence: 90,
         lead_id: leadId,
-        status_id: 'stat_4ZdiZqcSIkoGVnNOyxiEY58eTGQmFNG3LPlEVQ4V7Nk',
         value: 500,
         label: 'HelloWorld' + uuid(),
         value_period: 'monthly'
@@ -46,6 +45,7 @@ describe('opportunity', function() {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
         expect(body.id).to.exist()
+        expect(body.value).equal(500)
         opportunityId = body.id
         expect(info).to.be.an.object()
         expect(info.statusCode).to.equal(200)
@@ -53,12 +53,14 @@ describe('opportunity', function() {
       })
   })
 
-  it('list opportunity', function(done) {
+  it('search opportunity', function(done) {
     closeio.opportunity
-      .list({lead_id:leadId})
+      .search({confidence: 90})
       .done(function(err, body, info) {
         expect(err).to.be.null()
         expect(body).to.be.an.object()
+        expect(body.data[0].confidence).to.equal(90)
+        expect(info).to.be.an.object()
         expect(info.statusCode).to.equal(200)
         done()
       })

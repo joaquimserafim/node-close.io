@@ -112,7 +112,9 @@ Closeio.init = function init () {
     delete: operations.delete('saved_search', self)
   }
 
-  self.status = {
+  self.status = {}
+
+  self.status.lead = {
     create: operations.create('status/lead', self),
     list  : operations.search('status/lead', self),
     read  : operations.read('status/lead', self),
@@ -120,7 +122,7 @@ Closeio.init = function init () {
     delete: operations.delete('status/lead', self)
   }
 
-  self.opportunity = {
+  self.status.opportunity = {
     create: operations.create('status/opportunity', self),
     list  : operations.search('status/opportunity', self),
     read  : operations.read('status/opportunity', self),
